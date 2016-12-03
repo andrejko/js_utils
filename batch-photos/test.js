@@ -19,4 +19,4 @@ _getNameAndLookup = (index, callback) => {
 	console.log(a,b,c)
 })*/
 
-console.log(_.some([false, false]))
+console.log([1..100])
