@@ -1,22 +1,24 @@
 const async = require('async')
-const dns = require('dns');
-const _ = require('lodash');
+const fs = require('fs')
+const path = require('path')
+const _ = require('lodash')
+const request = require('request')
 
-let indexes = [0, 1, 2]
-let names = ['i.ua', 'u.ua', 'google.com']
+let filesPath = 'D:/js_utils/test'
 
-_getNameAndLookup = (index, callback) => {
-	dns.lookup(names[index], (err, address, family) => {
-		return callback(err, [address, family])
+console.time('filesWrite')
+
+const _createFile = (name, callback) => {
+	request('http://i.ua/', (error, response, body) => {
+		console.log(error)
+	  fs.writeFileSync(path.join(filesPath, name + '.txt'), body)
+
+	  callback(null)
 	})
 }
 
-/*async.map(indexes, _getNameAndLookup, (err, results) => {
-  console.log('all done', err, results);
-});*/
+let names = _.range(1, 40)
 
-/*dns.lookup('i.ua', (a,b,c) => {
-	console.log(a,b,c)
-})*/
-
-console.log([1..100])
+async.map(names, _createFile, (err, results) => {
+	console.timeEnd('filesWrite')
+})
